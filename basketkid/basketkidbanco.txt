@@ -1,0 +1,83 @@
+create database basket;
+create table usuario
+(
+idUsuario int primary key auto_increment,
+nome varchar(45),
+idade int not null,
+email varchar(45),
+senha varchar(45)
+);
+create table partida
+(
+idPartida int ,
+duracaoPartida double,
+tempoRestante double,
+placarJogo double,
+placarAdversario double,
+tempoArremesso double,
+idUsuario int,
+constraint fkusuarioidUsuario foreign key(idUsuario) references usuario(idUsuario),
+id_ajustes int,
+constraint fkajustesid_ajustes foreign key(id_ajustes) references ajustes(id_ajustes),
+idConfiguracoes int,
+constraint fkconfiguracoesidConfiguracoes foreign key(idConfiguracoes) references configuracoes(idConfiguracoes),
+idJogada int,
+constraint fkjogadaidJogada foreign key(idJogada) references jogada(idJogada)
+);
+drop table partida;
+create table jogada
+(
+idJogada int ,
+primeiroArremesso int,
+acertoOUerro int,
+PosicaoUsuario int,
+velocidadedoJogo int,
+posicaoAdversario1 int,
+posicaoAdversario2 int,
+posicaoAdversario3 int,
+PosicaoAnteriorJogador int,
+posicaoDoJogadorNaJogada int,
+coordenadaYdoToqueNaTelaPixels int,
+coordenadaXdoToqueNaTelaPixels int
+);
+select * from novatabelabasquete;
+create table ajustes
+(
+id_ajustes int primary key,
+larguraDaTelaPixels int,
+alturaDaTelaPixels int
+);
+
+create table configuracoes
+(
+idConfiguracoes int primary key auto_increment,
+nome varchar(100) not null,
+tipoInterface varchar(100) not null,
+tipoMarcacao varchar(100) not null
+);
+
+insert into configuracoes (nome, tipoInterface, TipoMarcacao)
+select NomeDoJogo, TipoInterface, TipoMarcacao from novatabelabasquete;
+insert into partida ( idPartida, duracaoPartida, tempoRestante, placarJogo, placarAdversario, tempoArremesso   )
+select IDPartidaProtocolo, DuracaoTotalPartida, TempoRestante, PlacarJogador, PlacarAdversarios, TempoEntreArremessos from novatabelabasquete;
+
+
+select * from usuario group by apelido order by apelido;
+
+select
+sum(placarJogo) as "Placar Jogador"
+from partida;
+
+select 
+sum(placarAdversario) as "Placar Adversario"
+from partida;
+
+select
+
+sum(primeiroArremesso) as "Quantidade de partidas"
+from jogada;
+
+select * from novatabelabasquete;
+select * from usuario;
+
+insert into usuario(nome) select distinct (IdentificadorNome) from novatabelabasquete;
